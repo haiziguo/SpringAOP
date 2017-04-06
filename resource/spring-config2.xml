@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+     http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 
+
+    <bean id="logger" class="com.lzp.mySpringAOP.WriterLogger" />
+
+    <bean id="loan" class="com.lzp.mySpringAOP.TestLoan" />
+    <bean id="person" class="com.lzp.mySpringAOP.Person">
+        <constructor-arg name="name" value="小名"></constructor-arg>
+    </bean>
+
+
+    <aop:config>
+ 
+        <!-- 捕获带参数的方法执行 -->
+        <aop:aspect ref="logger">
+            <aop:pointcut
+                expression="execution(* com.lzp.mySpringAOP.Loan.transfer(com.lzp.mySpringAOP.Person,java.lang.Double)) and args(person,amount)"
+                id="myPointCut" />
+            <aop:before method="transfer" pointcut-ref="myPointCut"
+                arg-names="person,amount" />
+        </aop:aspect>
+    </aop:config>
+    <!--<end id="audience_aspect" /> -->
+
+</beans>
